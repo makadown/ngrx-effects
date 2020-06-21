@@ -3,6 +3,9 @@ import { UsuarioService } from 'src/app/services/usuario.service';
 import { map } from 'rxjs/operators';
 import { Usuario } from 'src/app/models/usuario.model';
 import { Observable, Subscription } from 'rxjs';
+import { AppState } from 'src/app/store/reducers/app.reducers';
+import { Store } from '@ngrx/store';
+import { cargarUsuarios } from 'src/app/store/actions';
 
 @Component({
   selector: 'app-lista',
@@ -13,21 +16,20 @@ import { Observable, Subscription } from 'rxjs';
 export class ListaComponent implements OnInit {
   usuarios: Usuario[] = [];
   observableIpsum = new Observable();
-  constructor(public usuarioService: UsuarioService) {
+  constructor(private store: Store<AppState>) {
 
-    this.observableIpsum = this.usuarioService.getLoremIpsum()
-      .pipe(map((resp) => {
-        // console.log(resp);
-        return resp[0];
-      }));
+    this.store.select('usuarios').subscribe(({ users }) => {
+      this.usuarios = [];
+      console.log(users);
+      if (users) {
+        this.usuarios = users;
+      }
+    });
+
+    this.store.dispatch(cargarUsuarios());
   }
 
   ngOnInit(): void {
-    this.usuarioService.getUsers().pipe(
-      map((resp: any) => resp.data)
-    ).subscribe((data: any[]) => {
-      this.usuarios = data;
-    });
-  } 
+  }
 
 }
