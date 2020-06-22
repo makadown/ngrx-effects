@@ -2,6 +2,8 @@
 
 Ejercicio de Effect en NGRX con Angular. Parte del curso https://www.udemy.com/course/redux-ngrx-angular
 
+publicado en https://makadown.github.io/ngrx-effects/
+
 Como aparentemente el sitio oficial no proporciona CDN, aqui el Font awesome se instalo por acá
 https://github.com/FortAwesome/angular-fontawesome
 
