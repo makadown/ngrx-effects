@@ -23,13 +23,15 @@ const _usuariosReducer = createReducer(
         ...state,
         loading: false,
         loaded: true,
+        error: null,
         users: usuarios.length>0 ? [...usuarios] : []
     })),
     on(cargarUsuariosError, (state, {payload}) => ({ 
         ...state,
         loading: false,
         loaded: false,
-        error: payload
+        users: [],
+        error: { url: payload.url, name: payload.name, message: payload.message }
     }))   
 );
 

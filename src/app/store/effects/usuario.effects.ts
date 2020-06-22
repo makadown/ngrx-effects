@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { cargarUsuarios, cargarUsuariosSuccess, cargarUsuariosError } from '../actions';
+import { cargarUsuario, cargarUsuarioSuccess, cargarUsuarioError } from '../actions';
 import { tap, map, mergeMap, catchError } from 'rxjs/operators';
 import { UsuarioService } from '../../services/usuario.service';
 import { of } from 'rxjs';
 import { Usuario } from '../../models/usuario.model';
 
 @Injectable()
-export class UsuariosEffects {
+export class UsuarioEffects {
 
     constructor(private actions$: Actions,
         private usuarioService: UsuarioService) { }
 
-    cargarUsuarios$ = createEffect(
+    cargarUsuario$ = createEffect(
         () => this.actions$.pipe(
-                ofType(cargarUsuarios),
-                mergeMap( () => 
-                    this.usuarioService.getUsers().pipe(
-                        map( (users: Usuario[]) => cargarUsuariosSuccess({ usuarios: users })),
-                        catchError(error => of(cargarUsuariosError({ payload: error })))
-                    )
+            ofType(cargarUsuario),
+            mergeMap(({ id }) =>
+                this.usuarioService.getUsersById(id).pipe(
+                    map((user: Usuario) => cargarUsuarioSuccess({ usuario: user })),
+                    catchError(error => of(cargarUsuarioError({ payload: error })))
                 )
             )
+        )
     );
 }

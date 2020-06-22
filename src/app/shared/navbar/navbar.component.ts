@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit {
 
   irUsuario(id: string) {
     if (!id) { return; }
+    console.log('redireccionando a usuario');
     this.router.navigate(['/usuario', id]);
   }
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,17 @@ export class UsuarioService {
   constructor(private http: HttpClient) { }
 
   getUsers() {
-    return this.http.get(`${this.urlReqRes}/users?per_page=6`);
+    return this.http.get(`${this.urlReqRes}/users?per_page=12&delay=3`)
+      .pipe(
+          map( resp => resp['data'])
+      );
+  }
+
+  getUsersById(id: string) {
+    return this.http.get(`${this.urlReqRes}/users/${ id }`)
+      .pipe(
+          map( resp => resp['data'])
+      );
   }
 
   /**

@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AppState } from 'src/app/store/reducers/app.reducers';
 import { Store } from '@ngrx/store';
 import { cargarUsuarios } from 'src/app/store/actions';
+import { faSync } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-lista',
@@ -14,16 +15,18 @@ import { cargarUsuarios } from 'src/app/store/actions';
   ]
 })
 export class ListaComponent implements OnInit {
+  faSpin = faSync;
+  loading = false;
+  error: any;
+
   usuarios: Usuario[] = [];
   observableIpsum = new Observable();
   constructor(private store: Store<AppState>) {
 
-    this.store.select('usuarios').subscribe(({ users }) => {
-      this.usuarios = [];
-      console.log(users);
-      if (users) {
-        this.usuarios = users;
-      }
+    this.store.select('usuarios').subscribe(({ users, error, loading }) => {
+      this.loading = loading;
+      this.usuarios = users;
+      this.error = error;
     });
 
     this.store.dispatch(cargarUsuarios());
